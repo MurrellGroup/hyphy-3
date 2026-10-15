@@ -22,6 +22,7 @@
 #include "hyphy/analyses/absrel.hpp"
 #include "hyphy/analyses/relax.hpp"
 #include "hyphy/analyses/fubar.hpp"
+#include "diffubar_bindings.hpp"
 #include "hyphy/analyses/prime.hpp"
 #include "hyphy/core/neighbor_joining.hpp"
 #include "hyphy/analyses/gard.hpp"
@@ -103,6 +104,8 @@ NB_MODULE(_hyphy3, m) {
         .def_prop_ro("num_patterns", [](const Alignment& a) { return a.patterns.size(); })
         .def_ro("embedded_tree_newick", &Alignment::embedded_tree_newick)
         .def_ro("taxon_names", &Alignment::taxon_names);
+
+    bind_diffubar(m);
 
     // MG94Parameters
     nb::class_<MG94Parameters>(m, "MG94Parameters")
