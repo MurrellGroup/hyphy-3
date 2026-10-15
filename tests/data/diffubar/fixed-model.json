@@ -1,0 +1,11 @@
+{
+  "schema": "hyphy3-diffubar-fitted-model-v1",
+  "exchangeability_order": ["AC", "AG", "AT", "CG", "CT", "GT"],
+  "nucleotide_order": ["A", "C", "G", "T"],
+  "tree_branch_units": "input-tree",
+  "genetic_code": "Universal",
+  "exchangeabilities": [1.2, 0.9, 0.7, 1.1, 2.1, 0.8],
+  "f3x4": [[0.3, 0.2, 0.2, 0.3], [0.2, 0.3, 0.3, 0.2], [0.25, 0.25, 0.25, 0.25]],
+  "alpha": 0.8,
+  "beta": 0.3
+}

@@ -125,6 +125,26 @@ add_executable(hyphy_fubar_test tests/test_fubar.cpp)
 target_link_libraries(hyphy_fubar_test PRIVATE hyphy3_core)
 add_test(NAME FUBARTest COMMAND hyphy_fubar_test)
 
+add_executable(hyphy_diffubar_inference_test tests/test_diffubar_inference.cpp)
+target_link_libraries(hyphy_diffubar_inference_test PRIVATE hyphy3_core)
+add_test(NAME DifFUBARInferenceTest COMMAND hyphy_diffubar_inference_test)
+
+add_executable(hyphy_diffubar_test tests/test_diffubar.cpp)
+target_link_libraries(hyphy_diffubar_test PRIVATE hyphy3_core)
+add_test(NAME DifFUBARNativeTest COMMAND hyphy_diffubar_test)
+
+add_executable(hyphy_diffubar_json_test tests/test_diffubar_json.cpp)
+target_link_libraries(hyphy_diffubar_json_test PRIVATE hyphy3_core)
+add_test(NAME DifFUBARJSONTest COMMAND hyphy_diffubar_json_test)
+
+add_test(NAME DifFUBARCLITest
+    COMMAND ${CMAKE_COMMAND}
+        -DDIFFUBAR=$<TARGET_FILE:hyphy3-diffubar>
+        -DDATA_DIR=${CMAKE_CURRENT_SOURCE_DIR}/tests/data/diffubar
+        -DWORK_DIR=${CMAKE_CURRENT_BINARY_DIR}/diffubar_cli_test
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/tests/check_diffubar_cli.cmake
+)
+
 add_executable(hyphy_prime_test tests/test_prime.cpp)
 target_link_libraries(hyphy_prime_test PRIVATE hyphy3_core)
 add_test(NAME PRIMETest COMMAND hyphy_prime_test)
@@ -168,6 +188,7 @@ add_executable(hyphy3
     src/apps/hyphy_absrel.cpp
     src/apps/hyphy_relax.cpp
     src/apps/hyphy_fubar.cpp
+    src/apps/hyphy_diffubar.cpp
     src/apps/hyphy_prime.cpp
     src/apps/hyphy_gard.cpp
     src/apps/hyphy_slac.cpp
@@ -200,6 +221,9 @@ target_link_libraries(hyphy3-relax PRIVATE hyphy3_core)
 add_executable(hyphy3-fubar src/apps/hyphy_fubar.cpp)
 target_link_libraries(hyphy3-fubar PRIVATE hyphy3_core)
 
+add_executable(hyphy3-diffubar src/apps/hyphy_diffubar.cpp)
+target_link_libraries(hyphy3-diffubar PRIVATE hyphy3_core)
+
 add_executable(hyphy3-prime src/apps/hyphy_prime.cpp)
 target_link_libraries(hyphy3-prime PRIVATE hyphy3_core)
 
@@ -223,6 +247,7 @@ add_executable(hyphy-busted ALIAS hyphy3-busted)
 add_executable(hyphy-absrel ALIAS hyphy3-absrel)
 add_executable(hyphy-relax ALIAS hyphy3-relax)
 add_executable(hyphy-fubar ALIAS hyphy3-fubar)
+add_executable(hyphy-diffubar ALIAS hyphy3-diffubar)
 add_executable(hyphy-prime ALIAS hyphy3-prime)
 add_executable(hyphy-gard ALIAS hyphy3-gard)
 add_executable(hyphy-slac ALIAS hyphy3-slac)
@@ -258,6 +283,14 @@ if(Python_FOUND)
                 ENVIRONMENT "PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR}/python;KMP_DUPLICATE_LIB_OK=TRUE"
             )
 
+            add_test(NAME DifFUBARPythonTest
+                COMMAND "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/python/tests/test_diffubar.py"
+                WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            )
+            set_tests_properties(DifFUBARPythonTest PROPERTIES
+                ENVIRONMENT "PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR}/python;KMP_DUPLICATE_LIB_OK=TRUE"
+            )
+
             add_test(NAME JSONSchemaTest
                 COMMAND "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_json_schema.py"
                 WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
@@ -268,4 +301,3 @@ if(Python_FOUND)
         endif()
     endif()
 endif()
-
